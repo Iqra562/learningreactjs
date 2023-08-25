@@ -1,2 +1,0 @@
-# learningReactJs
-rule-1
