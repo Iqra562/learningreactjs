@@ -3,6 +3,7 @@ import './App.css';
 import Navbar  from './components/Navbar';
 import Alert from './components/alert';
 import Form from './components/form';
+import About from './components/about';
 function App() {
  const [btntext,changetext] = useState('Enable dark mode');
  const [alert,setalert] = useState(null);
@@ -39,8 +40,7 @@ function App() {
    <Alert alert={alert}/>
  <div className="container"> 
    <Form heading="Enter your text"  mode={mode}/>
-   {/* <About/> */}
-
+<About/>
  </div>
    </>
   );
