@@ -3,7 +3,7 @@ import {useQuery} from "react-query";
 import {PostServices} from "../services/post.services";
 import {UtilServices} from "../utilities/util.service";
 import { useNavigate } from "react-router-dom"; 
-import {UnAuthenticatedRoutesNames} from "../utilities/util.constant;"
+import {UnAuthenticatedRoutesNames} from "../utilities/util.constant";
 
 function Home(){
     return <div>    <div >

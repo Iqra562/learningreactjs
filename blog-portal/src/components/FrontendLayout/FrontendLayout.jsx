@@ -50,7 +50,7 @@ function FrontendLayout() {
                 <>
               {ShowFiveCategories?.map((singleCategory,index)=>(
                 <li>
-                  <a href="#">{index}{singleCategory.cat_title}</a>
+                  <a href="#">{singleCategory.cat_title}</a>
                 </li>
               ))}
               <li>
