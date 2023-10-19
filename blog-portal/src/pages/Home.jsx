@@ -1,71 +1,86 @@
-import React, {useMemo} from "react";
-import {useQuery} from "react-query";
-import {PostServices} from "../services/post.services";
-import {UtilServices} from "../utilities/util.service";
-import { useNavigate } from "react-router-dom"; 
-import {UnAuthenticatedRoutesNames} from "../utilities/util.constant";
+import React, { useMemo } from "react";
+import { useQuery } from "react-query";
+import { PostServices } from "../services/post.services";
+import { UtilServices } from "../utilities/util.service";
+import { useNavigate } from "react-router-dom";
+import { UnAuthenticatedRoutesNames } from "../utilities/util.constant";
 
-function Home(){
-    return <div>    <div >
+function Home() {
+  const navigate = useNavigate();
+  const { data: getPostData } = useQuery("getPosts", PostServices.getPosts);
+  const getPostDataMemo = useMemo(() => getPostData?.data?.results, [getPostData?.data?.results]);
 
-    <h1 className="page-header">
-        Page Heading
-        <small>Secondary Text</small>
-    </h1>
-    <h2>
-        <a href="#">Blog Post Title</a>
-    </h2>
-    <p className="lead">
-        by <a href="index.php">Start Bootstrap</a>
-    </p>
-    <p><span className="glyphicon glyphicon-time"></span> Posted on August 28, 2013 at 10:00 PM</p>
-    <hr/>
-    <img className="img-responsive" src="http://placehold.it/900x300" alt=""/>
-    <hr/>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore, veritatis, tempora, necessitatibus inventore nisi quam quia repellat ut tempore laborum possimus eum dicta id animi corrupti debitis ipsum officiis rerum.</p>
-    <a className="btn btn-primary" href="#">Read More <span className="glyphicon glyphicon-chevron-right"></span></a>
+  return (
+    <div>
+      <h1 className="page-header">All Posts</h1>
+      {getPostDataMemo?.map((singlePost) => {
+        return (
+          <div key={singlePost.id}>
+            <h2>
+              <a
+                className="cursor-pointer"
+                onClick={() => {
+                  navigate(
+                    UnAuthenticatedRoutesNames.PostServices.replace(
+                      ":id",
+                      singlePost?.id
+                    )
+                  );
+                }}
+                href="#"
+              >
+                {singlePost?.post_title}
+              </a>
+            </h2>
+            <p className="lead">
+              by <a href="index.php">{singlePost?.post_author}</a>
+            </p>
 
-    <hr/>
-
-    <h2>
-        <a href="#">Blog Post Title</a>
-    </h2>
-    <p className="lead">
-        by <a href="index.php">Start Bootstrap</a>
-    </p>
-    <p><span className="glyphicon glyphicon-time"></span> Posted on August 28, 2013 at 10:45 PM</p>
-    <hr/>
-    <img className="img-responsive" src="http://placehold.it/900x300" alt=""/>
-    <hr/>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quibusdam, quasi, fugiat, asperiores harum voluptatum tenetur a possimus nesciunt quod accusamus saepe tempora ipsam distinctio minima dolorum perferendis labore impedit voluptates!</p>
-    <a className="btn btn-primary" href="#">Read More <span className="glyphicon glyphicon-chevron-right"></span></a>
-
-    <hr/>
-    <h2>
-        <a href="#">Blog Post Title</a>
-    </h2>
-    <p className="lead">
-        by <a href="index.php">Start Bootstrap</a>
-    </p>
-    <p><span className="glyphicon glyphicon-time"></span> Posted on August 28, 2013 at 10:45 PM</p>
-    <hr/>
-    <img className="img-responsive" src="http://placehold.it/900x300" alt=""/>
-    <hr/>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate, voluptates, voluptas dolore ipsam cumque quam veniam accusantium laudantium adipisci architecto itaque dicta aperiam maiores provident id incidunt autem. Magni, ratione.</p>
-    <a className="btn btn-primary" href="#">Read More <span className="glyphicon glyphicon-chevron-right"></span></a>
-
-    <hr/>
-
-    <ul className="pager">
-        <li className="previous">
-            <a href="#">&larr; Older</a>
-        </li>
-        <li className="next">
-            <a href="#">Newer &rarr;</a>
-        </li>
-    </ul>
-
-
-</div></div>
+            <p>
+              <span className="glyphicon glyphicon-time"></span> Posted on &nbsp;{" "}
+              {UtilServices.convertDateToMyFormat(singlePost?.post_date)}
+            </p>
+            <hr />
+            {singlePost?.image ? (
+              <img
+                onClick={() => {
+                  navigate(
+                    UnAuthenticatedRoutesNames.POST_DETAIL.replace(
+                      ":id",
+                      singlePost?.id
+                    )
+                  );
+                }}
+                className="img-responsive cursor-pointer"
+                src={singlePost.image}
+                alt=""
+              />
+            ) : (
+              <img
+                onClick={() => {
+                  navigate(
+                    UnAuthenticatedRoutesNames.POST_DETAIL.replace(
+                      ":id",
+                      singlePost?.id
+                    )
+                  );
+                }}
+                className="img-responsive cursor-pointer"
+                src="http://placehold.it/900x300"
+                alt=""
+              />
+            )}
+            <hr />
+            <p>{singlePost?.post_content}</p>
+            <a className="btn btn-primary" href="#">
+              Read More <span className="glyphicon glyphicon-chevron-right"></span>
+            </a>
+            <hr />
+          </div>
+        );
+      })}
+    </div>
+  );
 }
+
 export default Home;
